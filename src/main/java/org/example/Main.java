@@ -10,10 +10,10 @@ import java.util.ArrayList;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int Tiles = 0;
         int counter = 0;
-        ArrayList<Tile> GameBoard = new ArrayList<>();
+        ArrayList<AbstractTile> GameBoard = new ArrayList<>();
         ArrayList<Player> Players = new ArrayList<>();
         //used in case if we pass the dice as the file
         ArrayList<Short> DiceRolls = new ArrayList<>();
@@ -21,12 +21,22 @@ public class Main {
         boolean player_creation = false;
         boolean dicerolls_creation = false;
 
-        for(String line : Files.readAllLines(Path.of("first_game.txt"))){
+        for(String line : Files.readAllLines(Path.of("src/game_1.txt"))){
             if (counter == 0){
                 Tiles = Integer.parseInt(line.trim());
             }
+
+            if (tile_creation){
+                System.out.println(line);
+                GameBoard.add(TileFactory.createTile(line.split(" ")[0],Integer.parseInt(line.split(" ")[1])));
+            }
+
+
+
+
             if (line.trim().equals("TILES")){
                 tile_creation = true;
+
             }
             else if (line.trim().equals("PLAYERS")){
                 tile_creation = false;
@@ -44,6 +54,9 @@ public class Main {
 
 
 
+
+
+
             if (tile_creation){
                 GameBoard.add(null);
             }
@@ -57,12 +70,16 @@ public class Main {
 
 
 
-
-
-
         counter++;
         }
+        for (AbstractTile tile : GameBoard){
+            System.out.println("test");
+            System.out.println(tile.toString());
+        }
+        }
+
+
+
     }
 
 
-}

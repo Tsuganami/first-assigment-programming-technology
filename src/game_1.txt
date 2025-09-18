@@ -1,0 +1,20 @@
+10
+TILES
+Property 0
+Service 100
+Property 0
+Property 0
+Property 0
+Lucky 200
+Property 0
+Property 0
+Lucky 200
+Property 0
+
+PLAYERS
+Scarlet : GREEDY
+Jill: CAREFUL
+Caroline: TACTICAL
+
+DICEROLLS NONE
+
