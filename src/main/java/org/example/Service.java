@@ -4,12 +4,17 @@ public class Service extends AbstractTile {
     int amount = 0;
     public Service(int amount) {
         this.amount = amount;
-        tileType = TileType.SERVICE;
+        this.setTileType(TileType.SERVICE);
     }
 
     @Override
     public String toString() {
-        return "Service{amount=" + amount + '}';
+        String result = "Service{amount=" + amount ;
+        if (players != null && !players.isEmpty()) {
+            result += ", players=" + players;
+        }
+
+        return result + '}';
     }
 
 }

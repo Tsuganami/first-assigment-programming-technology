@@ -3,11 +3,11 @@ package org.example;
 class TileFactory {
     static AbstractTile createTile(String type, int amount) {
         switch (type) {
-            case "LUCKY":
+            case "Lucky":
                 return new Lucky(amount);
-            case "SERVICE":
+            case "Service":
                 return new Service(amount);
-            case "PROPERTY":
+            case "Property":
                 return new Property();
 
         }

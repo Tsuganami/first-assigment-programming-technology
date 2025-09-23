@@ -1,13 +1,27 @@
 package org.example;
 
 public class Lucky extends AbstractTile {
-    int amount;
+    private int amount;
     public Lucky(int amount) {
-        this.tileType = TileType.LUCKY;
+        this.setTileType(TileType.LUCKY);
         this.amount = amount;
     }
+    int getAmount() {
+        return amount;
+    }
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+
     @Override
     public String toString() {
-        return "Lucky{amount=" + amount + '}';
+        String result = "Lucky{amount=" + amount;
+
+        if (players != null && !players.isEmpty()) {
+            result += ", players=" + players;
+        }
+
+        return result + '}';
     }
 }

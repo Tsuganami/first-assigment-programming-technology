@@ -1,85 +1,116 @@
+
 package org.example;
 import org.example.players.Player;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import static org.example.players.GameCycle.GameCycle;
+import static org.example.players.GameCycle.printGameBoard;
+
+
 public class Main {
 
+
     public static void main(String[] args) throws IOException {
-        int Tiles = 0;
+        int tiles = 0;
         int counter = 0;
-        ArrayList<AbstractTile> GameBoard = new ArrayList<>();
-        ArrayList<Player> Players = new ArrayList<>();
-        //used in case if we pass the dice as the file
-        ArrayList<Short> DiceRolls = new ArrayList<>();
-        boolean tile_creation = false;
-        boolean player_creation = false;
-        boolean dicerolls_creation = false;
+        ArrayList<AbstractTile> gameBoard = new ArrayList<>();
+        ArrayList<Player> players = new ArrayList<>();
+        ArrayList<Short> diceRolls = new ArrayList<>();
+        boolean tileCreation = false;
+        boolean playerCreation = false;
+        boolean diceRollsCreation = false;
 
-        for(String line : Files.readAllLines(Path.of("src/game_1.txt"))){
-            if (counter == 0){
-                Tiles = Integer.parseInt(line.trim());
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/game_1.txt"))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+
+                if (counter == 0) {
+                    tiles = Integer.parseInt(line);
+                    counter++;
+                    continue;
+                }
+
+
+                if (line.equals("TILES")) {
+                    tileCreation = true;
+                    playerCreation = false;
+                    diceRollsCreation = false;
+                    counter++;
+                    continue;
+                } else if (line.equals("PLAYERS")) {
+                    tileCreation = false;
+                    playerCreation = true;
+                    diceRollsCreation = false;
+                    counter++;
+                    continue;
+                } else if (line.equals("DICEROLLS NONE")) {
+                    break;
+                } else if (line.equals("DICEROLLS")) {
+                    tileCreation = false;
+                    playerCreation = false;
+                    diceRollsCreation = true;
+                    counter++;
+                    continue;
+                }
+
+
+                if (tileCreation && !line.isEmpty()) {
+                    String[] parts = line.split(" ");
+                    if (parts.length >= 2) {
+                        String tileType = parts[0];
+                        int value = Integer.parseInt(parts[1]);
+                        System.out.println("Creating tile: " + line);
+                        gameBoard.add(TileFactory.createTile(tileType, value));
+                    }
+                } else if (playerCreation && !line.isEmpty()) {
+                    String[] parts = line.split(":");
+                    if (parts.length >= 2) {
+                        String playerName = parts[0].trim();
+                        String playerType = parts[1].trim();
+                        System.out.println("Creating player: " + playerName + " (" + playerType + ")");
+
+                        players.add(new Player(playerName,playerType));
+
+                    }
+                } else if (diceRollsCreation && !line.isEmpty()) {
+                    try {
+                        short diceValue = Short.parseShort(line);
+                        diceRolls.add(diceValue);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid dice roll value: " + line);
+                    }
+                }
+
+                counter++;
             }
-
-            if (tile_creation){
-                System.out.println(line);
-                GameBoard.add(TileFactory.createTile(line.split(" ")[0],Integer.parseInt(line.split(" ")[1])));
-            }
-
-
-
-
-            if (line.trim().equals("TILES")){
-                tile_creation = true;
-
-            }
-            else if (line.trim().equals("PLAYERS")){
-                tile_creation = false;
-                player_creation = true;
-
-            }
-            else if (line.trim().equals("DICEROLLS NONE")){
-                break;
-            }
-            else if  (line.trim().equals("DICEROLLS")){
-                tile_creation = false;
-                player_creation = false;
-                dicerolls_creation = false;
-            }
-
-
-
-
-
-
-            if (tile_creation){
-                GameBoard.add(null);
-            }
-            if (player_creation){
-                Players.add(null);
-            }
-            if (dicerolls_creation){
-                DiceRolls.add(null);
-            }
-
-
-
-
-        counter++;
         }
-        for (AbstractTile tile : GameBoard){
-            System.out.println("test");
-            System.out.println(tile.toString());
-        }
-        }
+        GameCycle(players,gameBoard);
+
+
+        // Print results
+        //System.out.println("Total tiles expected: " + tiles);
+        //System.out.println("Tiles created: " + gameBoard.size());
+        //System.out.println("Players created: " + players.size());
+        //System.out.println("Dice rolls: " + diceRolls.size());
+
+        //System.out.println("\nGameBoard contents:");
+        //for (int i = 0; i < gameBoard.size(); i++) {
+        //    AbstractTile tile = gameBoard.get(i);
+        //    if (tile != null) {
+        //        System.out.println("Tile " + i + ": " + tile.toString());
+        //    } else {
+        //        System.out.println("Tile " + i + ": null");
+        //    }
+        //}
+        //printGameBoard(gameBoard);
 
 
 
     }
-
-
+}

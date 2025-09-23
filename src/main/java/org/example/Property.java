@@ -12,17 +12,22 @@ public class Property extends AbstractTile {
     int HousePrice = HOUSE_PRICE;
     public Property() {
         this.owner = null;
-        this.tileType = TileType.PROPERTY;
+        this.setTileType(TileType.PROPERTY);
     }
     public Property(Player owner) {
         this.owner = owner;
-        this.tileType = TileType.PROPERTY;
+        this.setTileType(TileType.PROPERTY);
 
 
     }
     @Override
     public String toString() {
-        return "PROPERTY{owner=" + (owner != null ? owner.toString() : "none") + ", HOUSE=" + propertyState + "}";
+        String result = "PROPERTY{owner=" + (owner != null ? owner.toString() : "none") + ", HOUSE=" + propertyState;
+        if (players != null && !players.isEmpty()) {
+            result += ", players=" + players;
+        }
+
+        return result + '}';
     }
 
 
