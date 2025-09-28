@@ -1,6 +1,7 @@
 package org.example.players;
 
 import org.example.AbstractTile;
+import org.example.PropertyState;
 import org.example.TileType;
 
 import java.util.ArrayList;
@@ -36,15 +37,25 @@ public class GameCycle {
                 player.position = Dice.ThrowDice(player.position,GameBoard.size());
                 //Buying - Paying
                 switch (GameBoard.get(player.position).getTileType()){
-                    case LUCKY{
-                        player.AddMoney(GameBoard.get(player.position).getMoney());
+                        case LUCKY{
+                                player.AddMoney(GameBoard.get(player.position).getMoney());
+                        }
+                        case SERVICE {
+                        player.SubtractMoney(GameBoard.get(player.position).getMoney());
+                    }
+                        case PROPERTY{
+                            if (GameBoard.get(player.position).getOwner == null){
+
+
+
+                            }
+                        }
+
+
+
+
 
                     }
-
-
-
-
-                }
             }
 
 

@@ -6,7 +6,6 @@ import static org.example.GameConfig.HOUSE_PRICE;
 import static org.example.GameConfig.PROPERTY_PRICE;
 
 public class Property extends AbstractTile {
-    Player owner;
     PropertyState propertyState;
     int Price = PROPERTY_PRICE;
     int HousePrice = HOUSE_PRICE;
@@ -20,6 +19,18 @@ public class Property extends AbstractTile {
 
 
     }
+
+    @Override
+    public int getMoney() {
+        if (propertyState.equals(PropertyState.EMPTY)) {
+            return Price;
+        }
+        else if (propertyState.equals(PropertyState.HOUSE)) {
+            return HousePrice;
+        }
+        return Price;
+    }
+
     @Override
     public String toString() {
         String result = "PROPERTY{owner=" + (owner != null ? owner.toString() : "none") + ", HOUSE=" + propertyState;

@@ -6,7 +6,8 @@ public class Lucky extends AbstractTile {
         this.setTileType(TileType.LUCKY);
         this.amount = amount;
     }
-    int getAmount() {
+    @Override
+    public int getMoney() {
         return amount;
     }
     public void setAmount(int amount) {

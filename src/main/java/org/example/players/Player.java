@@ -1,5 +1,6 @@
 package org.example.players;
 
+import org.example.AbstractTile;
 import org.example.Strategy;
 
 public final class Player {
@@ -32,6 +33,16 @@ public final class Player {
         }
 
         this.money -= money;
+
+    }
+    public Boolean BuyingDesicion(AbstractTile tile){
+        switch (this.strategy){
+            case GREEDY:
+
+
+            case TACTICAL:
+            case CAREFUL:
+        }
 
     }
 

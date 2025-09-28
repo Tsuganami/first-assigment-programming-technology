@@ -8,6 +8,10 @@ public class Service extends AbstractTile {
     }
 
     @Override
+    public int  getMoney() {
+        return amount;
+    }
+    @Override
     public String toString() {
         String result = "Service{amount=" + amount ;
         if (players != null && !players.isEmpty()) {
