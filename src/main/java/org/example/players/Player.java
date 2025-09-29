@@ -2,6 +2,8 @@ package org.example.players;
 
 import org.example.AbstractTile;
 import org.example.Strategy;
+import org.example.PropertyState;
+import org.example.TileType;
 
 public final class Player {
     public int position = 0;
@@ -38,12 +40,41 @@ public final class Player {
     public Boolean BuyingDesicion(AbstractTile tile){
         switch (this.strategy){
             case GREEDY:
-
-
-            case TACTICAL:
+                if (tile.getTileType() == TileType.PROPERTY) {
+                    if (tile.getOwner() == null && this.money >= 1000) {
+                        return true;
+                    }
+                    if (tile.getOwner() == this && tile.getPropertyState() == PropertyState.EMPTY && this.money >= 4000) {
+                        return true;
+                    }
+                }
+                return false;
             case CAREFUL:
+                if (tile.getTileType() == TileType.PROPERTY) {
+                    if (tile.getOwner() == null && this.money >= 2000) {
+                        return true;
+                    }
+                    if (tile.getOwner() == this && tile.getPropertyState() == PropertyState.EMPTY && this.money >= 8000) {
+                        return true;
+                    }
+                }
+                return false;
+            case TACTICAL:
+                if (tile.getTileType() == TileType.PROPERTY) {
+                    this.BuyCounter++;
+                    if (this.BuyCounter % 2 == 0) {
+                        return false;
+                    }
+                    if (tile.getOwner() == null && this.money >= 1000) {
+                        return true;
+                    }
+                    if (tile.getOwner() == this && tile.getPropertyState() == PropertyState.EMPTY && this.money >= 4000) {
+                        return true;
+                    }
+                }
+                return false;
         }
-
+        return false;
     }
 
 

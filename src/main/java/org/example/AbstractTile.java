@@ -25,5 +25,13 @@ public class AbstractTile {
      public Player getOwner(){
         return owner;
      }
+     
+     public void setOwner(Player owner) {
+        this.owner = owner;
+     }
+     
+     public void setPropertyState(PropertyState propertyState) {
+        this.propertyState = propertyState;
+     }
 
 }

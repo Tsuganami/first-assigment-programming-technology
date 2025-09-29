@@ -6,7 +6,8 @@ import static org.example.GameConfig.HOUSE_PRICE;
 import static org.example.GameConfig.PROPERTY_PRICE;
 
 public class Property extends AbstractTile {
-    PropertyState propertyState;
+    PropertyState propertyState = PropertyState.EMPTY;
+    Player owner = null;
     int Price = PROPERTY_PRICE;
     int HousePrice = HOUSE_PRICE;
     public Property() {
@@ -29,6 +30,24 @@ public class Property extends AbstractTile {
             return HousePrice;
         }
         return Price;
+    }
+
+    @Override
+    public Player getOwner() {
+        return owner;
+    }
+    
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+    
+    @Override
+    public PropertyState getPropertyState() {
+        return propertyState;
+    }
+    
+    public void setPropertyState(PropertyState propertyState) {
+        this.propertyState = propertyState;
     }
 
     @Override

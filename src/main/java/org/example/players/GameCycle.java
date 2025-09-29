@@ -22,50 +22,132 @@ public class GameCycle {
         }
     }
     public static Boolean GameCycle(ArrayList<Player> players, ArrayList<AbstractTile> GameBoard){
-        Boolean win =  false;
-        //Initial positioning, put all of the players on the first square
+        Boolean win = false;
+        int rounds = 0;
         for (Player player : players){
             GameBoard.get(0).players.add(player);
             player.position = 0;
         }
         printGameBoard(GameBoard);
 
-        while (!win){
-
-            for (Player player : players){
-                //Move
-                player.position = Dice.ThrowDice(player.position,GameBoard.size());
-                //Buying - Paying
-                switch (GameBoard.get(player.position).getTileType()){
-                        case LUCKY{
-                                player.AddMoney(GameBoard.get(player.position).getMoney());
+        while (!win && rounds < 100){
+            rounds++;
+            System.out.println("Round " + rounds);
+            
+            ArrayList<Player> activePlayers = new ArrayList<>(players);
+            
+            for (int i = 0; i < activePlayers.size(); i++){
+                Player player = activePlayers.get(i);
+                
+                if (player.getMoney() < 0) continue;
+                
+                GameBoard.get(player.position).players.remove(player);
+                player.position = Dice.ThrowDice(player.position, GameBoard.size());
+                GameBoard.get(player.position).players.add(player);
+                
+                AbstractTile currentTile = GameBoard.get(player.position);
+                
+                switch (currentTile.getTileType()){
+                    case LUCKY:
+                        player.AddMoney(currentTile.getMoney());
+                        break;
+                    case SERVICE:
+                        player.SubtractMoney(currentTile.getMoney());
+                        if (player.getMoney() < 0) {
+                            eliminatePlayer(player, GameBoard);
+                            continue;
                         }
-                        case SERVICE {
-                        player.SubtractMoney(GameBoard.get(player.position).getMoney());
-                    }
-                        case PROPERTY{
-                            if (GameBoard.get(player.position).getOwner == null){
-
-
-
+                        break;
+                    case PROPERTY:
+                        if (currentTile.getOwner() == null) {
+                            if (player.BuyingDesicion(currentTile)) {
+                                player.SubtractMoney(1000);
+                                currentTile.setOwner(player);
+                            }
+                        } else if (currentTile.getOwner() == player) {
+                            if (currentTile.getPropertyState() == PropertyState.EMPTY && player.BuyingDesicion(currentTile)) {
+                                player.SubtractMoney(4000);
+                                currentTile.setPropertyState(PropertyState.HOUSE);
+                            }
+                        } else {
+                            int rent = currentTile.getPropertyState() == PropertyState.EMPTY ? 500 : 2000;
+                            player.SubtractMoney(rent);
+                            currentTile.getOwner().AddMoney(rent);
+                            if (player.getMoney() < 0) {
+                                eliminatePlayer(player, GameBoard);
+                                continue;
                             }
                         }
-
-
-
-
-
-                    }
+                        break;
+                }
             }
-
-
-
-            //Buying and paying
-
-            //Win lose check
-
+            
+            activePlayers.removeIf(player -> player.getMoney() < 0);
+            
+            if (activePlayers.size() == 1) {
+                System.out.println("Game Over! Winner: " + activePlayers.get(0));
+                System.out.println("Winner's money: " + activePlayers.get(0).getMoney());
+                printPlayerProperties(activePlayers.get(0), GameBoard);
+                win = true;
+            }
+            
+            if (rounds % 10 == 0) {
+                System.out.println("Status after " + rounds + " rounds:");
+                for (Player player : activePlayers) {
+                    System.out.println(player + " owns " + countProperties(player, GameBoard) + " properties");
+                }
+            }
+        }
+        
+        if (!win) {
+            System.out.println("Game ended after 100 rounds without a clear winner");
+            Player richest = findRichestPlayer(players);
+            System.out.println("Richest player: " + richest);
+            printPlayerProperties(richest, GameBoard);
         }
 
-    return false;
+        return win;
+    }
+    
+    private static void eliminatePlayer(Player player, ArrayList<AbstractTile> GameBoard) {
+        System.out.println(player + " is eliminated!");
+        for (AbstractTile tile : GameBoard) {
+            if (tile.getOwner() == player) {
+                tile.setOwner(null);
+                tile.setPropertyState(PropertyState.EMPTY);
+            }
+        }
+        player.setMoney(-1);
+    }
+    
+    private static int countProperties(Player player, ArrayList<AbstractTile> GameBoard) {
+        int count = 0;
+        for (AbstractTile tile : GameBoard) {
+            if (tile.getOwner() == player) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    private static void printPlayerProperties(Player player, ArrayList<AbstractTile> GameBoard) {
+        System.out.println("Properties owned by " + player + ":");
+        for (int i = 0; i < GameBoard.size(); i++) {
+            if (GameBoard.get(i).getOwner() == player) {
+                System.out.println("  Position " + i + ": " + GameBoard.get(i));
+            }
+        }
+    }
+    
+    private static Player findRichestPlayer(ArrayList<Player> players) {
+        Player richest = null;
+        int maxWealth = -1;
+        for (Player player : players) {
+            if (player.getMoney() > maxWealth) {
+                maxWealth = player.getMoney();
+                richest = player;
+            }
+        }
+        return richest;
     }
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import static org.example.players.GameCycle.GameCycle;
 import static org.example.players.GameCycle.printGameBoard;
+import org.example.players.Dice;
 
 
 public class Main {
@@ -90,6 +91,8 @@ public class Main {
                 counter++;
             }
         }
+        
+        Dice.setDiceRolls(diceRolls);
         GameCycle(players,gameBoard);
 
 
