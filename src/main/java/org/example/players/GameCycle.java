@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 
 public class GameCycle {
-
+    /**
+     *Method for printing out the Gameboard in a pretty way
+     */
     public static void printGameBoard(ArrayList<AbstractTile> gameBoard) {
         System.out.println("\nGameBoard contents:");
         for (int i = 0; i < gameBoard.size(); i++) {
@@ -21,6 +23,9 @@ public class GameCycle {
             }
         }
     }
+    /**
+     *Very important fucntion, in which the whole game loops
+     */
     public static Boolean GameCycle(ArrayList<Player> players, ArrayList<AbstractTile> GameBoard){
         Boolean win = false;
         int rounds = 0;
@@ -108,7 +113,9 @@ public class GameCycle {
 
         return win;
     }
-    
+    /**
+     *This function is needed to remove the player who already lost the game
+     */
     private static void eliminatePlayer(Player player, ArrayList<AbstractTile> GameBoard) {
         System.out.println(player + " is eliminated!");
         for (AbstractTile tile : GameBoard) {
@@ -119,7 +126,9 @@ public class GameCycle {
         }
         player.setMoney(-1);
     }
-    
+    /**
+     *This function is needed for convinience, to make it easier to print winning character
+     */
     private static int countProperties(Player player, ArrayList<AbstractTile> GameBoard) {
         int count = 0;
         for (AbstractTile tile : GameBoard) {
@@ -129,7 +138,9 @@ public class GameCycle {
         }
         return count;
     }
-    
+    /**
+     *This function is needed for convinience, to make it easier to print winning character
+     */
     private static void printPlayerProperties(Player player, ArrayList<AbstractTile> GameBoard) {
         System.out.println("Properties owned by " + player + ":");
         for (int i = 0; i < GameBoard.size(); i++) {
@@ -138,7 +149,9 @@ public class GameCycle {
             }
         }
     }
-    
+    /**
+     *This function is needed for convinience, to make it easier to find winning character
+     */
     private static Player findRichestPlayer(ArrayList<Player> players) {
         Player richest = null;
         int maxWealth = -1;

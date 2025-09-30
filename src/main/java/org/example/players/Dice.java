@@ -8,7 +8,9 @@ public class Dice {
     private static ArrayList<Short> diceRolls = new ArrayList<>();
     private static int rollIndex = 0;
     private static boolean useFileRolls = false;
-    
+    /**
+     *This function is used to set dice rolls in, if you have them defined in the files
+     */
     public static void setDiceRolls(ArrayList<Short> rolls) {
         diceRolls = rolls;
         rollIndex = 0;
@@ -19,7 +21,9 @@ public class Dice {
             System.out.println("Dice configured for random generation");
         }
     }
-
+    /**
+     *Random dice throws generations with protection from going over the size of the board
+     */
     public static int ThrowDice(int position, int GameBoardSize) {
         int diceValue;
         

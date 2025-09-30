@@ -15,13 +15,17 @@ import static org.example.players.GameCycle.printGameBoard;
 import org.example.players.Dice;
 
 public class Main {
-
+    /**
+     *A fucntion to make printing Error messages easier
+     */
     public static class GameValidationException extends Exception {
         public GameValidationException(String message) {
             super(message);
         }
     }
-
+    /**
+     * Main entry method for the program responsible for loading in the file
+     */
     public static void main(String[] args) {
         String gameFile = "src/game_1.txt";
         if (args.length > 0) {
@@ -48,7 +52,9 @@ public class Main {
             System.exit(1);
         }
     }
-
+    /**
+     *It's responsible for loading up the file and parsing it
+     */
     private static void runGame(String gameFile) throws IOException, GameValidationException {
         int tiles = 0;
         int counter = 0;
@@ -127,7 +133,9 @@ public class Main {
         Dice.setDiceRolls(diceRolls);
         GameCycle(players, gameBoard);
     }
-
+    /**
+     *Used to validate the tile Count
+     */
     private static void validateTileCount(int tiles) throws GameValidationException {
         if (tiles <= 0) {
             throw new GameValidationException("Tile count must be positive, got: " + tiles);
@@ -139,13 +147,17 @@ public class Main {
             throw new GameValidationException("Minimum 3 tiles required for a game, got: " + tiles);
         }
     }
-
+    /**
+     *Used to validate the gameBoardSize
+     */
     private static void validateGameBoardSize(ArrayList<AbstractTile> gameBoard, int expectedTiles) throws GameValidationException {
         if (gameBoard.size() != expectedTiles) {
             throw new GameValidationException("Expected " + expectedTiles + " tiles, but created " + gameBoard.size());
         }
     }
-
+    /**
+     *Used to validate the playercount
+     */
     private static void validatePlayersCount(ArrayList<Player> players) throws GameValidationException {
         if (players.isEmpty()) {
             throw new GameValidationException("At least one player is required");
@@ -154,7 +166,9 @@ public class Main {
             throw new GameValidationException("Maximum 8 players allowed, got: " + players.size());
         }
     }
-
+    /**
+     *Used to process tileline
+     */
     private static void processTileLine(String line, ArrayList<AbstractTile> gameBoard) throws GameValidationException {
         String[] parts = line.split(" ");
         if (parts.length < 2) {
@@ -178,13 +192,17 @@ public class Main {
             throw new GameValidationException("Invalid tile value format: " + parts[1]);
         }
     }
-
+    /**
+     *Used to check that there are proper tiletype
+     */
     private static void validateTileType(String tileType) throws GameValidationException {
         if (!tileType.equals("Property") && !tileType.equals("Service") && !tileType.equals("Lucky")) {
             throw new GameValidationException("Invalid tile type: " + tileType + ". Must be Property, Service, or Lucky");
         }
     }
-
+    /**
+     * Used to validate Values of the tiles
+     */
     private static void validateTileValue(String tileType, int value) throws GameValidationException {
         if (tileType.equals("Property") && value != 0) {
             throw new GameValidationException("Property tiles must have value 0, got: " + value);
@@ -202,7 +220,9 @@ public class Main {
             throw new GameValidationException("Lucky reward too high (max 10000), got: " + value);
         }
     }
-
+    /**
+     *Used to process player lines from the text files
+     */
     private static void processPlayerLine(String line, ArrayList<Player> players, Set<String> playerNames) throws GameValidationException {
         String[] parts = line.split(":");
         if (parts.length < 2) {
@@ -219,7 +239,9 @@ public class Main {
         players.add(new Player(playerName, playerType));
         playerNames.add(playerName);
     }
-
+    /**
+     *Used to validate players names
+     */
     private static void validatePlayerName(String playerName, Set<String> existingNames) throws GameValidationException {
         if (playerName.isEmpty()) {
             throw new GameValidationException("Player name cannot be empty");
@@ -234,13 +256,17 @@ public class Main {
             throw new GameValidationException("Player name contains invalid characters: " + playerName);
         }
     }
-
+    /**
+     *Used to validate Player Strategies
+     */
     private static void validatePlayerStrategy(String strategy) throws GameValidationException {
         if (!strategy.equals("GREEDY") && !strategy.equals("CAREFUL") && !strategy.equals("TACTICAL")) {
             throw new GameValidationException("Invalid player strategy: " + strategy + ". Must be GREEDY, CAREFUL, or TACTICAL");
         }
     }
-
+    /**
+     *Used properly load in Dice Rolls
+     */
     private static void processDiceRollLine(String line, ArrayList<Short> diceRolls) throws GameValidationException {
         try {
             short diceValue = Short.parseShort(line);
@@ -250,13 +276,17 @@ public class Main {
             throw new GameValidationException("Invalid dice roll value: " + line);
         }
     }
-
+    /**
+     *Used to ensure that the dice rolls are within range
+     */
     private static void validateDiceValue(short diceValue) throws GameValidationException {
         if (diceValue < 1 || diceValue > 6) {
             throw new GameValidationException("Dice value must be between 1 and 6, got: " + diceValue);
         }
     }
-
+    /**
+     *Used to validate that game even makes sense
+     */
     private static void validateFinalGameState(ArrayList<AbstractTile> gameBoard, ArrayList<Player> players, int expectedTiles) throws GameValidationException {
         if (gameBoard.size() != expectedTiles) {
             throw new GameValidationException("Final validation failed: Expected " + expectedTiles + " tiles, got " + gameBoard.size());

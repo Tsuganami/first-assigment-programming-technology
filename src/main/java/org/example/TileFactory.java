@@ -2,7 +2,7 @@ package org.example;
 
 class TileFactory {
     /**
-     *
+     *Method for creating Tiles based on the provided tiletype in the textfile
      *
      *
      *
