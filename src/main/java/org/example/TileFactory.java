@@ -1,6 +1,12 @@
 package org.example;
 
 class TileFactory {
+    /**
+     *
+     *
+     *
+     *
+     */
     static AbstractTile createTile(String type, int amount) {
         switch (type) {
             case "Lucky":
