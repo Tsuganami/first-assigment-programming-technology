@@ -27,7 +27,7 @@ public class Main {
      * Main entry method for the program responsible for loading in the file
      */
     public static void main(String[] args) {
-        String gameFile = "src/game_2.txt";
+        String gameFile = "src/game_1.txt";
         if (args.length > 0) {
             gameFile = args[0];
         }

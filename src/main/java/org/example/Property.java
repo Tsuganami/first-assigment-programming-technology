@@ -6,25 +6,25 @@ import static org.example.GameConfig.HOUSE_PRICE;
 import static org.example.GameConfig.PROPERTY_PRICE;
 
 public class Property extends AbstractTile {
-    PropertyState propertyState = PropertyState.EMPTY;
-    Player owner = null;
-    int Price = PROPERTY_PRICE;
-    int HousePrice = HOUSE_PRICE;
+    private PropertyState propertyState = PropertyState.EMPTY;
+    private Player owner = null;
+    private final int Price = PROPERTY_PRICE;
+    private final int HousePrice = HOUSE_PRICE;
+    
     /**
-     *Constructor it's been called from TileFactory to create a Property tile in case there is no owner
+     * Constructor called from TileFactory to create a Property tile with no owner
      */
     public Property() {
         this.owner = null;
         this.setTileType(TileType.PROPERTY);
     }
+    
     /**
-     *Constructor it's been called from TileFactory to create a Property tile in case there is owner
+     * Constructor called from TileFactory to create a Property tile with an owner
      */
     public Property(Player owner) {
         this.owner = owner;
         this.setTileType(TileType.PROPERTY);
-
-
     }
 
     @Override
@@ -43,6 +43,7 @@ public class Property extends AbstractTile {
         return owner;
     }
     
+    @Override
     public void setOwner(Player owner) {
         this.owner = owner;
     }
@@ -52,6 +53,7 @@ public class Property extends AbstractTile {
         return propertyState;
     }
     
+    @Override
     public void setPropertyState(PropertyState propertyState) {
         this.propertyState = propertyState;
     }
